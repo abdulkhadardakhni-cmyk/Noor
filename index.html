@@ -72,10 +72,12 @@ color:white;
 <div id="prayerTimes">Click button to load prayer times</div>
 <button onclick="getLocation()">Get Prayer Time</button>
 
-<div id="quranContent">
+<div class="card">
 <h2>Quran Reader</h2>
+
 <select id="surahSelect" onchange="loadSurah()"></select>
-<div id="surahText"></div>
+
+<div id="quranText">Select a surah</div>
 </div>
 
 <div class="card">
@@ -163,47 +165,55 @@ document.getElementById("prayerTimes").innerText="Allow location access";
 }
 </script>
 
-<script>
-const baseURL = "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/"; // free data source
+  <script>
 
-// Surah list
-const surahs = [
-  "quran-simple-min", // basic text edition — can be replaced
-];
+// load surah list
+async function loadSurahList(){
 
-// Populate surah dropdown
-function loadSurahList() {
-  let select = document.getElementById("surahSelect");
-  for (let i = 1; i <= 114; i++) {
-    let option = document.createElement("option");
-    option.value = i;
-    option.innerText = "Surah " + i;
-    select.appendChild(option);
-  }
-}
+const res = await fetch("https://api.alquran.cloud/v1/surah");
+const data = await res.json();
 
-// Load selected surah
-async function loadSurah() {
-  let surahNum = document.getElementById("surahSelect").value;
-  const url = `${baseURL}ben-muhiuddinkhan-la/${surahNum}.json`; // example translation edition
+let select = document.getElementById("surahSelect");
 
-  const res = await fetch(url);
-  const data = await res.json();
+data.data.forEach(s=>{
+let opt = document.createElement("option");
+opt.value = s.number;
+opt.text = s.number + ". " + s.englishName;
+select.appendChild(opt);
+});
 
-  let html = "";
-  data.ayahs.forEach(a => {
-    html += `<p>${a.numberInSurah}. ${a.text}</p>`;
-  });
-
-  document.getElementById("surahText").innerHTML = html;
 }
 
 loadSurahList();
+
+
+// load surah text
+async function loadSurah(){
+
+let num = document.getElementById("surahSelect").value;
+
+const res = await fetch(
+`https://api.alquran.cloud/v1/surah/${num}/en.asad`
+);
+
+const data = await res.json();
+
+let html="";
+
+data.data.ayahs.forEach(a=>{
+html += `<p>${a.numberInSurah}. ${a.text}</p>`;
+});
+
+document.getElementById("quranText").innerHTML = html;
+
+}
+
 </script>
 
 </body>
 
 </html>
+
 
 
 
