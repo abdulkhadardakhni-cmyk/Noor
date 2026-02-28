@@ -73,11 +73,11 @@ color:white;
 <button onclick="getLocation()">Get Prayer Time</button>
 
 <div class="card">
-<h2>Quran Reader</h2>
+<h2>📖 Quran Reader</h2>
 
 <select id="surahSelect" onchange="loadSurah()"></select>
 
-<div id="quranText">Select a surah</div>
+<div id="quranText">Select Surah</div>
 </div>
 
 <div class="card">
@@ -164,55 +164,60 @@ function showError(){
 document.getElementById("prayerTimes").innerText="Allow location access";
 }
 </script>
-
-  <script>
+  
+<script>
 
 // load surah list
 async function loadSurahList(){
-
 const res = await fetch("https://api.alquran.cloud/v1/surah");
 const data = await res.json();
 
-let select = document.getElementById("surahSelect");
+let select=document.getElementById("surahSelect");
 
 data.data.forEach(s=>{
-let opt = document.createElement("option");
-opt.value = s.number;
-opt.text = s.number + ". " + s.englishName;
+let opt=document.createElement("option");
+opt.value=s.number;
+opt.text=s.number+" - "+s.englishName;
 select.appendChild(opt);
 });
-
 }
-
 loadSurahList();
 
 
-// load surah text
+// load Arabic + English
 async function loadSurah(){
 
-let num = document.getElementById("surahSelect").value;
+let num=document.getElementById("surahSelect").value;
 
-const res = await fetch(
-`https://api.alquran.cloud/v1/surah/${num}/en.asad`
+const res=await fetch(
+`https://api.alquran.cloud/v1/surah/${num}/editions/ar.alafasy,en.asad`
 );
 
-const data = await res.json();
+const data=await res.json();
+
+let arabic=data.data[0].ayahs;
+let english=data.data[1].ayahs;
 
 let html="";
 
-data.data.ayahs.forEach(a=>{
-html += `<p>${a.numberInSurah}. ${a.text}</p>`;
-});
-
-document.getElementById("quranText").innerHTML = html;
-
+for(let i=0;i<arabic.length;i++){
+html+=`
+<div style="margin-bottom:20px">
+<p style="font-size:24px;direction:rtl">${arabic[i].text}</p>
+<p style="font-size:16px;color:#ddd">${english[i].text}</p>
+</div>
+`;
 }
 
+document.getElementById("quranText").innerHTML=html;
+
+}
 </script>
 
 </body>
 
 </html>
+
 
 
 
