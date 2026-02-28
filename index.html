@@ -118,10 +118,49 @@ document.body.classList.toggle("dark");
 }
 
 </script>
+  <script>
+function getLocation(){
+
+if(navigator.geolocation){
+
+navigator.geolocation.getCurrentPosition(showPosition, showError);
+
+}else{
+document.getElementById("prayerTimes").innerText="Geolocation not supported";
+}
+
+}
+
+async function showPosition(position){
+
+const lat = position.coords.latitude;
+const lon = position.coords.longitude;
+
+const res = await fetch(
+`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`
+);
+
+const data = await res.json();
+const t = data.data.timings;
+
+document.getElementById("prayerTimes").innerHTML =
+`Fajr: ${t.Fajr}<br>
+Dhuhr: ${t.Dhuhr}<br>
+Asr: ${t.Asr}<br>
+Maghrib: ${t.Maghrib}<br>
+Isha: ${t.Isha}`;
+
+}
+
+function showError(){
+document.getElementById("prayerTimes").innerText="Allow location access";
+}
+</script>
 
 </body>
 
 </html>
+
 
 
 
