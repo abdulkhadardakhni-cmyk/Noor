@@ -274,19 +274,26 @@ function stopAyahAudio(){
 }
 </script>
 
-  <script>
-async function getHadith(){
-  document.getElementById("hadithText").innerText="Loading Hadith...";
+<script>
+let hadiths=[];
 
-  const res = await fetch("https://api.hadith.sutanlab.id/books/bukhari?range=1-300");
+async function loadHadiths(){
+  const res = await fetch("https://raw.githubusercontent.com/fawazahmed0/hadith-api/main/editions/eng-bukhari.json");
   const data = await res.json();
+  hadiths = data.hadiths;
+}
+loadHadiths();
 
-  const random = Math.floor(Math.random()*data.data.hadiths.length);
-  const hadith = data.data.hadiths[random].arab;
-  const number = data.data.hadiths[random].number;
+function getHadith(){
+  if(hadiths.length===0){
+    document.getElementById("hadithText").innerText="Loading Hadith...";
+    return;
+  }
 
+  const random = Math.floor(Math.random()*hadiths.length);
   document.getElementById("hadithText").innerHTML =
-    hadith + "<br><br><b>Bukhari Hadith #" + number + "</b>";
+    hadiths[random].text +
+    "<br><br><b>Hadith #" + hadiths[random].hadithnumber + "</b>";
 }
 </script>
   
@@ -294,6 +301,7 @@ async function getHadith(){
 
 
 </html>
+
 
 
 
