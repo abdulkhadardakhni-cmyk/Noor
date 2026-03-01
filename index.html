@@ -224,7 +224,7 @@ surahAudio.onpause = ()=> clearInterval(scrollInterval);
 surahAudio.onended = ()=> clearInterval(scrollInterval);
 </script>
 
- <script>
+<script>
 let hadiths=[];
 let index=0;
 
@@ -242,14 +242,10 @@ async function loadBook(){
   showHadith();
 }
 
-function explanation(text){
-  return "Is hadith ka matlab hai: " + text
-    .replace(/Actions/i,"Amaal")
-    .replace(/intentions/i,"niyat")
-    .replace(/believer/i,"momim")
-    .replace(/brother/i,"bhai")
-    .replace(/love/i,"mohabbat")
-    .replace(/Allah/i,"Allah Ta'ala");
+function urduExplanation(text){
+  return "Is hadees ka matlab yeh hai ke " + 
+  "insaan ko apni niyat saaf rakhni chahiye aur har kaam sirf Allah ki raza ke liye karna chahiye. " +
+  "Yeh hadees humein achay ikhlaaq, sachai aur dusron ke saath mohabbat ka dars deti hai.";
 }
 
 function showHadith(){
@@ -264,7 +260,7 @@ function showHadith(){
     " Hadith #" + h.hadithnumber + "</b>";
 
   document.getElementById("hadithExplain").innerText =
-    explanation(h.text);
+    urduExplanation(h.text);
 }
 
 function nextHadith(){
@@ -284,6 +280,7 @@ loadBook();
 
 
 </html>
+
 
 
 
