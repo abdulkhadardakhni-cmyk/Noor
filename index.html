@@ -178,9 +178,23 @@ document.getElementById("quranText").innerHTML=html;
 }
 </script>
 
+<script>
+const paraSelect = document.getElementById("paraSelect");
+
+for(let i=1;i<=30;i++){
+  let option=document.createElement("option");
+  option.value=i;
+  option.text="Para "+i;
+  paraSelect.appendChild(option);
+}
+</script>
+
+</body>
+
 </body>
 
 </html>
+
 
 
 
