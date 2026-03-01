@@ -91,17 +91,14 @@ color:white;
 <button onclick="newQuote()">New Quote</button>
 </div>
 
-  <hr>
-
+<div class="card">
 <h2>Hadith Collection</h2>
 
-<div id="hadithBox">
-  <p id="hadithText">Click button to see Hadith</p>
+<p id="hadithText">Click button to load Hadith</p>
+
+<button onclick="getHadith()">Show Hadith</button>
 </div>
-
-<button onclick="newHadith()">Show Hadith</button>
-
-
+  
 <script>
 let c=0;
 function inc(){
@@ -278,24 +275,26 @@ function stopAyahAudio(){
 </script>
 
   <script>
-const hadiths = [
-  "Actions are judged by intentions. — Bukhari",
-  "The best among you are those who have the best manners. — Bukhari",
-  "Make things easy, do not make things difficult. — Muslim",
-  "None of you truly believes until he loves for his brother what he loves for himself. — Bukhari",
-  "Smiling in front of your brother is charity. — Tirmidhi"
-];
+async function getHadith(){
+  document.getElementById("hadithText").innerText="Loading Hadith...";
 
-function newHadith(){
-  const random = Math.floor(Math.random()*hadiths.length);
-  document.getElementById("hadithText").innerText = hadiths[random];
+  const res = await fetch("https://api.hadith.sutanlab.id/books/bukhari?range=1-300");
+  const data = await res.json();
+
+  const random = Math.floor(Math.random()*data.data.hadiths.length);
+  const hadith = data.data.hadiths[random].arab;
+  const number = data.data.hadiths[random].number;
+
+  document.getElementById("hadithText").innerHTML =
+    hadith + "<br><br><b>Bukhari Hadith #" + number + "</b>";
 }
 </script>
-
+  
 </body>
 
 
 </html>
+
 
 
 
