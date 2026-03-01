@@ -257,17 +257,14 @@ document.getElementById("ayahText").innerText="Unable to load Ayah";
 loadAyah();
 <script>
 
-  <script>
-let count = 0;
-
+ <script>
 function increase(){
-count++;
-document.getElementById("count").innerText = count;
+var x = document.getElementById("count");
+x.innerText = Number(x.innerText) + 1;
 }
 
 function reset(){
-count = 0;
-document.getElementById("count").innerText = count;
+document.getElementById("count").innerText = 0;
 }
 </script>
   
@@ -275,6 +272,7 @@ document.getElementById("count").innerText = count;
 
 
 </html>
+
 
 
 
