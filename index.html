@@ -74,9 +74,7 @@ color:white;
 
 <br><br>
 
-<p id="hadithText">Click Next to load Hadith</p>
-
-<p id="hadithExplain" style="color:gray;"></p>
+<p id="hadithText">Loading Hadith...</p>
 
 <button onclick="prevHadith()">⬅ Prev</button>
 <button onclick="nextHadith()">Next ➡</button>
@@ -229,12 +227,10 @@ let hadiths=[];
 let index=0;
 
 async function loadBook(){
-  document.getElementById("hadithText").innerText="Loading Hadith...";
-  document.getElementById("hadithExplain").innerText="";
-
   const book=document.getElementById("bookSelect").value;
+  document.getElementById("hadithText").innerText="Loading Hadith...";
 
-  const res = await fetch(`https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/eng-${book}.json`);
+  const res = await fetch("https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/urd-"+book+".json");
   const data = await res.json();
 
   hadiths=data.hadiths;
@@ -242,25 +238,14 @@ async function loadBook(){
   showHadith();
 }
 
-function urduExplanation(text){
-  return "Is hadees ka matlab yeh hai ke " + 
-  "insaan ko apni niyat saaf rakhni chahiye aur har kaam sirf Allah ki raza ke liye karna chahiye. " +
-  "Yeh hadees humein achay ikhlaaq, sachai aur dusron ke saath mohabbat ka dars deti hai.";
-}
-
 function showHadith(){
-  if(hadiths.length===0) return;
+  if(!hadiths.length) return;
 
-  const h=hadiths[index];
+  const urduText = hadiths[index].text;
 
-  document.getElementById("hadithText").innerHTML =
-    h.text +
-    "<br><br><b>" +
-    document.getElementById("bookSelect").value.toUpperCase() +
-    " Hadith #" + h.hadithnumber + "</b>";
-
-  document.getElementById("hadithExplain").innerText =
-    urduExplanation(h.text);
+  document.getElementById("hadithText").innerText =
+    convertToRoman(urduText) +
+    "\n\nHadith #" + hadiths[index].hadithnumber;
 }
 
 function nextHadith(){
@@ -273,6 +258,29 @@ function prevHadith(){
   showHadith();
 }
 
+function convertToRoman(text){
+  return text
+    .replace(/ا/g,"a")
+    .replace(/ب/g,"b")
+    .replace(/ت/g,"t")
+    .replace(/ج/g,"j")
+    .replace(/ح/g,"h")
+    .replace(/خ/g,"kh")
+    .replace(/د/g,"d")
+    .replace(/ر/g,"r")
+    .replace(/س/g,"s")
+    .replace(/ش/g,"sh")
+    .replace(/ف/g,"f")
+    .replace(/ق/g,"q")
+    .replace(/ک/g,"k")
+    .replace(/ل/g,"l")
+    .replace(/م/g,"m")
+    .replace(/ن/g,"n")
+    .replace(/و/g,"o")
+    .replace(/ہ/g,"h")
+    .replace(/ی/g,"y");
+}
+
 loadBook();
 </script>
   
@@ -280,6 +288,7 @@ loadBook();
 
 
 </html>
+
 
 
 
