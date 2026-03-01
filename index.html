@@ -201,9 +201,17 @@ async function loadPara(){
 
   let html="";
 
-  data.data.ayahs.forEach(a=>{
-    html += `<p style="font-size:24px; direction:rtl; text-align:right;">${a.text}</p>`;
-  });
+ data.data.ayahs.forEach(a => {
+  html += `
+    <div style="margin-bottom:18px;">
+      <p style="font-size:24px; direction:rtl; text-align:right;">
+        ${a.text}
+      </p>
+
+      <button onclick="playAudio(${a.number})">▶ Play</button>
+    </div>
+  `;
+});
 
   document.getElementById("quranText").innerHTML=html;
 }
@@ -213,6 +221,7 @@ async function loadPara(){
 
 
 </html>
+
 
 
 
