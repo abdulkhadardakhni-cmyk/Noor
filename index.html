@@ -62,24 +62,18 @@ color:white;
 
 <div class="container">
 
-<div class="card">
-
 <h2>Hadith Collection</h2>
 
-<select id="bookSelect" onchange="loadBook()">
+<select id="bookSelect" onchange="loadHadith()">
 <option value="bukhari">Bukhari</option>
 <option value="muslim">Muslim</option>
 <option value="tirmidhi">Tirmidhi</option>
 </select>
 
-<br><br>
+<p id="hadithText">Loading hadith...</p>
 
-<p id="hadithText">Loading Hadith...</p>
-
-<button onclick="prevHadith()">⬅ Prev</button>
-<button onclick="nextHadith()">Next ➡</button>
-
-</div>
+<button onclick="prevHadith()">Prev</button>
+<button onclick="nextHadith()">Next</button>
  
 <div class="card">
 <h2>📖 Quran Reader</h2>
@@ -226,68 +220,57 @@ surahAudio.onended = ()=> clearInterval(scrollInterval);
 let hadiths=[];
 let index=0;
 
-async function loadBook(){
-  const book=document.getElementById("bookSelect").value;
-  document.getElementById("hadithText").innerText="Loading Hadith...";
+async function loadHadith(){
 
-  const res = await fetch("https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/urd-"+book+".json");
-  const data = await res.json();
+const book=document.getElementById("bookSelect").value;
+document.getElementById("hadithText").innerText="Loading...";
 
-  hadiths=data.hadiths;
-  index=0;
-  showHadith();
+const res = await fetch("https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/eng-"+book+".json");
+const data = await res.json();
+
+hadiths=data.hadiths;
+index=0;
+showHadith();
 }
 
 function showHadith(){
-  if(!hadiths.length) return;
+if(!hadiths.length) return;
 
-  const urduText = hadiths[index].text;
+let text = hadiths[index].text;
 
-  document.getElementById("hadithText").innerText =
-    convertToRoman(urduText) +
-    "\n\nHadith #" + hadiths[index].hadithnumber;
+document.getElementById("hadithText").innerText =
+roman(text) + "\n\nHadith #" + hadiths[index].hadithnumber;
 }
 
 function nextHadith(){
-  index=(index+1)%hadiths.length;
-  showHadith();
+index=(index+1)%hadiths.length;
+showHadith();
 }
 
 function prevHadith(){
-  index=(index-1+hadiths.length)%hadiths.length;
-  showHadith();
+index=(index-1+hadiths.length)%hadiths.length;
+showHadith();
 }
 
-function convertToRoman(text){
-  return text
-    .replace(/ا/g,"a")
-    .replace(/ب/g,"b")
-    .replace(/ت/g,"t")
-    .replace(/ج/g,"j")
-    .replace(/ح/g,"h")
-    .replace(/خ/g,"kh")
-    .replace(/د/g,"d")
-    .replace(/ر/g,"r")
-    .replace(/س/g,"s")
-    .replace(/ش/g,"sh")
-    .replace(/ف/g,"f")
-    .replace(/ق/g,"q")
-    .replace(/ک/g,"k")
-    .replace(/ل/g,"l")
-    .replace(/م/g,"m")
-    .replace(/ن/g,"n")
-    .replace(/و/g,"o")
-    .replace(/ہ/g,"h")
-    .replace(/ی/g,"y");
+function roman(t){
+return t
+.replace(/Actions/gi,"Amaal")
+.replace(/intentions/gi,"niyat")
+.replace(/believer/gi,"momin")
+.replace(/charity/gi,"sadqa")
+.replace(/truth/gi,"sachai")
+.replace(/Allah/gi,"Allah Ta'ala")
+.replace(/Prophet/gi,"Nabi");
 }
 
-loadBook();
+loadHadith();
 </script>
   
 </body>
 
 
 </html>
+
 
 
 
