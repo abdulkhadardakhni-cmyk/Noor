@@ -245,7 +245,7 @@ function playSurahAudio(){
   clearInterval(scrollInterval);
   scrollInterval = setInterval(()=>{
     window.scrollBy(0,1);
-  },50);
+  },100);
 }
 
 surahAudio.onpause = ()=> clearInterval(scrollInterval);
@@ -263,6 +263,7 @@ function stopSurahAudio(){
 
 
 </html>
+
 
 
 
