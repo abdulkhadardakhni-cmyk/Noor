@@ -1,6 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+#beads{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+margin:10px 0;
+}
+
+.bead{
+width:12px;
+height:12px;
+margin:4px;
+border-radius:50%;
+background:#ccc;
+transition:.3s;
+}
+
+.active{
+background:#1e6f5c;
+transform:scale(1.2);
+}
+
+button{
+padding:10px;
+margin:5px;
+border:none;
+border-radius:8px;
+background:#1e6f5c;
+color:white;
+}
+</style>
 <title>NOOR - Islamic App</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
@@ -29,7 +60,7 @@ color:black;
 padding:20px;
 margin:20px auto;
 border-radius:15px;
-width:70%;
+width:90%;
 max-width:400px;
 box-shadow:0 4px 10px rgba(0,0,0,0.3);
 }
@@ -65,6 +96,30 @@ color:white;
 <h3 id="hijriDate">Loading Islamic Date...</h3>
 
 <div class="card">
+
+<h2>📿 Ultra Tasbeeh</h2>
+
+<select id="zikr">
+<option>SubhanAllah</option>
+<option>Alhamdulillah</option>
+<option>Allahu Akbar</option>
+<option>Astaghfirullah</option>
+</select>
+
+<h1 id="count">0</h1>
+
+<div id="beads"></div>
+
+<button onclick="countTasbeeh()">Tap</button>
+<button onclick="resetTasbeeh()">Reset</button>
+
+<br><br>
+<button onclick="setLimit(33)">33</button>
+<button onclick="setLimit(99)">99</button>
+
+</div>
+  
+<div class="card">
 <h2>📖 Quran Reader</h2>
 
 <select id="surahSelect" onchange="loadSurah()"></select>
@@ -79,14 +134,6 @@ color:white;
 </select>
   
 </div>
-
-<h3>Qibla Direction</h3>
-
-<h3>Live Qibla Compass</h3>
-
-<div id="compass" style="font-size:60px; transition:0.3s;">🧭</div>
-
-<p id="qiblaText">Finding Qibla...</p>
 
 <h3>Daily Ayah</h3>
 <p id="ayahText">Loading Ayah...</p>
@@ -251,48 +298,77 @@ document.getElementById("ayahText").innerText="Unable to load Ayah";
 }
 
 loadAyah();
-</script>
-
 <script>
-let qiblaDeg=0;
 
-navigator.geolocation.getCurrentPosition(pos=>{
+  <script>
+let count = localStorage.getItem("zikrCount") || 0;
+let limit = 33;
 
-let lat=pos.coords.latitude*Math.PI/180;
-let lon=pos.coords.longitude*Math.PI/180;
+const beadsDiv = document.getElementById("beads");
 
-let kaabaLat=21.4225*Math.PI/180;
-let kaabaLon=39.8262*Math.PI/180;
+function createBeads(){
+beadsDiv.innerHTML="";
+for(let i=0;i<limit;i++){
+let b=document.createElement("div");
+b.className="bead";
+beadsDiv.appendChild(b);
+}
+}
+createBeads();
 
-let angle=Math.atan2(
-Math.sin(kaabaLon-lon),
-Math.cos(lat)*Math.tan(kaabaLat)-Math.sin(lat)*Math.cos(kaabaLon-lon)
-);
+update();
 
-qiblaDeg=(angle*180/Math.PI+360)%360;
+function countTasbeeh(){
 
-document.getElementById("qiblaText").innerText=
-"Qibla: "+qiblaDeg.toFixed(1)+"°";
+count++;
+localStorage.setItem("zikrCount",count);
 
+if(navigator.vibrate) navigator.vibrate(40);
+
+playClick();
+
+if(count>=limit){
+alert("Completed "+limit+" ✔");
+count=0;
+}
+
+update();
+}
+
+function resetTasbeeh(){
+count=0;
+localStorage.setItem("zikrCount",count);
+update();
+}
+
+function setLimit(l){
+limit=l;
+count=0;
+createBeads();
+update();
+}
+
+function update(){
+document.getElementById("count").innerText=count;
+
+let beads=document.querySelectorAll(".bead");
+
+beads.forEach((b,i)=>{
+b.classList.toggle("active",i<count);
 });
+}
 
-window.addEventListener("deviceorientation",e=>{
-
-let heading=e.alpha;
-if(heading===null) return;
-
-let rotate=360-heading+qiblaDeg;
-
-document.getElementById("compass").style.transform=
-"rotate("+rotate+"deg)";
-
-});
+function playClick(){
+let audio=new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=click-124467.mp3");
+audio.play();
+}
 </script>
   
 </body>
 
 
 </html>
+
 
 
 
