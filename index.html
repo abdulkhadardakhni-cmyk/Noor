@@ -62,7 +62,7 @@ color:white;
 
 <div class="container">
 
-  <div class="card">
+<div class="card">
 
 <h2>Hadith Collection</h2>
 
@@ -75,6 +75,8 @@ color:white;
 <br><br>
 
 <p id="hadithText">Click Next to load Hadith</p>
+
+<p id="hadithExplain" style="color:gray;"></p>
 
 <button onclick="prevHadith()">⬅ Prev</button>
 <button onclick="nextHadith()">Next ➡</button>
@@ -222,26 +224,13 @@ surahAudio.onpause = ()=> clearInterval(scrollInterval);
 surahAudio.onended = ()=> clearInterval(scrollInterval);
 </script>
 
-  <script>
-function stopSurahAudio(){
-  surahAudio.pause();
-  surahAudio.currentTime = 0;
-}
-</script>
-
-  <script>
-function stopAyahAudio(){
-  audioPlayer.pause();
-  audioPlayer.currentTime = 0;
-}
-</script>
-
-<script>
+ <script>
 let hadiths=[];
 let index=0;
 
 async function loadBook(){
   document.getElementById("hadithText").innerText="Loading Hadith...";
+  document.getElementById("hadithExplain").innerText="";
 
   const book=document.getElementById("bookSelect").value;
 
@@ -251,6 +240,16 @@ async function loadBook(){
   hadiths=data.hadiths;
   index=0;
   showHadith();
+}
+
+function explanation(text){
+  return "Is hadith ka matlab hai: " + text
+    .replace(/Actions/i,"Amaal")
+    .replace(/intentions/i,"niyat")
+    .replace(/believer/i,"momim")
+    .replace(/brother/i,"bhai")
+    .replace(/love/i,"mohabbat")
+    .replace(/Allah/i,"Allah Ta'ala");
 }
 
 function showHadith(){
@@ -263,6 +262,9 @@ function showHadith(){
     "<br><br><b>" +
     document.getElementById("bookSelect").value.toUpperCase() +
     " Hadith #" + h.hadithnumber + "</b>";
+
+  document.getElementById("hadithExplain").innerText =
+    explanation(h.text);
 }
 
 function nextHadith(){
@@ -282,6 +284,7 @@ loadBook();
 
 
 </html>
+
 
 
 
