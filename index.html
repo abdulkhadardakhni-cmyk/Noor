@@ -217,10 +217,22 @@ async function loadPara(){
 }
 </script>
 
+  <script>
+let audioPlayer = new Audio();
+
+function playAudio(num){
+  audioPlayer.pause();
+  audioPlayer.currentTime = 0;
+  audioPlayer.src = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${num}.mp3`;
+  audioPlayer.play();
+}
+</script>
+
 </body>
 
 
 </html>
+
 
 
 
