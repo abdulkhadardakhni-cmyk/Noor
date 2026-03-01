@@ -24,7 +24,7 @@ padding:20px;
 }
 
 .card{
-background:white;
+background:light blue;
 color:black;
 padding:20px;
 margin:20px auto;
@@ -64,7 +64,7 @@ color:white;
 
 <h3 id="hijriDate">Loading Islamic Date...</h3>
 
-
+<div class="card">
 <h2>📖 Quran Reader</h2>
 
 <select id="surahSelect" onchange="loadSurah()"></select>
@@ -79,6 +79,9 @@ color:white;
 </select>
   
 </div>
+
+<h3>Daily Ayah</h3>
+<p id="ayahText">Loading Ayah...</p>
 
   
 <script>
@@ -222,11 +225,31 @@ document.getElementById("hijriDate").innerText="Unable to load date";
 
 loadHijri();
 </script>
+
+<script>
+async function loadAyah(){
+try{
+const res = await fetch("https://api.alquran.cloud/v1/ayah/"+Math.floor(Math.random()*6236)+"/en.asad");
+const data = await res.json();
+
+document.getElementById("ayahText").innerText =
+data.data.text + " (Surah " +
+data.data.surah.englishName + " Ayah " +
+data.data.numberInSurah + ")";
+}
+catch{
+document.getElementById("ayahText").innerText="Unable to load Ayah";
+}
+}
+
+loadAyah();
+</script>
   
 </body>
 
 
 </html>
+
 
 
 
