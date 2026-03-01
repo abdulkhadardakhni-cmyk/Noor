@@ -65,7 +65,13 @@ color:white;
 
 <h3 id="hijriDate">Loading Islamic Date...</h3>
 
+<h2>📿 Tasbeeh Counter</h2>
 
+<h1 id="count">0</h1>
+
+<button onclick="increase()">Count</button>
+<button onclick="resetCounter()">Reset</button>
+  
 <div class="card">
 <h2>📖 Quran Reader</h2>
 
@@ -260,11 +266,23 @@ document.getElementById("ayahText").innerText = "Unable to load Ayah";
 
 loadAyah();
 </script>
+
+<script>
+function increase(){
+let value = document.getElementById("count");
+value.innerText = parseInt(value.innerText) + 1;
+}
+
+function resetCounter(){
+document.getElementById("count").innerText = 0;
+}
+</script>
   
 </body>
 
 
 </html>
+
 
 
 
