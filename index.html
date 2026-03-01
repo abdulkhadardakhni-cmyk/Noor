@@ -65,17 +65,7 @@ color:white;
 
 <h3 id="hijriDate">Loading Islamic Date...</h3>
 
-<div class="card">
 
-<h2>📿 Tasbeeh Counter</h2>
-
-<h1 id="count">0</h1>
-
-<button onclick="increase()">Count</button>
-<button onclick="reset()">Reset</button>
-
-</div>
-  
 <div class="card">
 <h2>📖 Quran Reader</h2>
 
@@ -92,8 +82,11 @@ color:white;
   
 </div>
 
-<h3>Daily Ayah</h3>
+<h2>📖 Daily Ayah</h2>
+
 <p id="ayahText">Loading Ayah...</p>
+
+<button onclick="loadAyah()">New Ayah</button>
 
   
 <script>
@@ -240,38 +233,39 @@ loadHijri();
 
 <script>
 async function loadAyah(){
+
+document.getElementById("ayahText").innerText = "Loading Ayah...";
+
 try{
-const res = await fetch("https://api.alquran.cloud/v1/ayah/"+Math.floor(Math.random()*6236)+"/en.asad");
-const data = await res.json();
+
+let random = Math.floor(Math.random()*6236)+1;
+
+let res = await fetch("https://api.alquran.cloud/v1/ayah/"+random+"/en.asad");
+
+let data = await res.json();
 
 document.getElementById("ayahText").innerText =
-data.data.text + " (Surah " +
-data.data.surah.englishName + " Ayah " +
+data.data.text +
+"\n\n(Surah " +
+data.data.surah.englishName +
+" - Ayah " +
 data.data.numberInSurah + ")";
+
 }
 catch{
-document.getElementById("ayahText").innerText="Unable to load Ayah";
+document.getElementById("ayahText").innerText = "Unable to load Ayah";
 }
+
 }
 
 loadAyah();
-<script>
-
- <script>
-function increase(){
-var x = document.getElementById("count");
-x.innerText = Number(x.innerText) + 1;
-}
-
-function reset(){
-document.getElementById("count").innerText = 0;
-}
 </script>
   
 </body>
 
 
 </html>
+
 
 
 
