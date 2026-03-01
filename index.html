@@ -90,11 +90,20 @@ color:white;
 <div class="card">
 <h2>Hadith Collection</h2>
 
-<p id="hadithText">Click button to load Hadith</p>
+<select id="bookSelect" onchange="loadBook()">
+  <option value="bukhari">Bukhari</option>
+  <option value="muslim">Muslim</option>
+  <option value="tirmidhi">Tirmidhi</option>
+</select>
 
-<button onclick="getHadith()">Show Hadith</button>
+<br><br>
+
+<p id="hadithText">Click Next to load Hadith</p>
+
+<button onclick="prevHadith()">⬅ Prev</button>
+<button onclick="nextHadith()">Next ➡</button>
+<button onclick="toggleLang()">🌐 Toggle Lang</button>
 </div>
-  
  
 <script>
 
@@ -233,31 +242,58 @@ function stopAyahAudio(){
 
 <script>
 let hadiths=[];
+let index=0;
+let showArabic=false;
 
-async function loadHadiths(){
-  const res = await fetch("https://raw.githubusercontent.com/fawazahmed0/hadith-api/main/editions/eng-bukhari.json");
+async function loadBook(){
+  document.getElementById("hadithText").innerText="Loading Hadith...";
+
+  const book=document.getElementById("bookSelect").value;
+
+  const res = await fetch(`https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/eng-${book}.json`);
   const data = await res.json();
-  hadiths = data.hadiths;
+
+  hadiths=data.hadiths;
+  index=0;
+  showHadith();
 }
-loadHadiths();
 
-function getHadith(){
-  if(hadiths.length===0){
-    document.getElementById("hadithText").innerText="Loading Hadith...";
-    return;
-  }
+function showHadith(){
+  if(hadiths.length===0) return;
 
-  const random = Math.floor(Math.random()*hadiths.length);
+  const h=hadiths[index];
+
   document.getElementById("hadithText").innerHTML =
-    hadiths[random].text +
-    "<br><br><b>Hadith #" + hadiths[random].hadithnumber + "</b>";
+    (showArabic && h.arab ? h.arab+"<br><br>" : "") +
+    h.text +
+    "<br><br><b>Hadith #" + h.hadithnumber + "</b>";
 }
+
+function nextHadith(){
+  if(hadiths.length===0) return;
+  index=(index+1)%hadiths.length;
+  showHadith();
+}
+
+function prevHadith(){
+  if(hadiths.length===0) return;
+  index=(index-1+hadiths.length)%hadiths.length;
+  showHadith();
+}
+
+function toggleLang(){
+  showArabic=!showArabic;
+  showHadith();
+}
+
+loadBook();
 </script>
   
 </body>
 
 
 </html>
+
 
 
 
