@@ -58,9 +58,11 @@ color:white;
 
 <body>
 
-<header>🌙 NOOR - Islamic Helper BY Aslam</header>
+<header>🌙 NOOR - Islamic Helper By Aslam Dakhani</header>
 
 <div class="container">
+
+<h3 id="hijriDate">Loading Islamic Date...</h3>
 
 
 <h2>📖 Quran Reader</h2>
@@ -199,11 +201,33 @@ function playSurahAudio(){
 surahAudio.onpause = ()=> clearInterval(scrollInterval);
 surahAudio.onended = ()=> clearInterval(scrollInterval);
 </script>
+
+<script>
+async function loadHijri(){
+
+try{
+const res = await fetch("https://api.aladhan.com/v1/gToH");
+const data = await res.json();
+
+const h = data.data.hijri;
+
+document.getElementById("hijriDate").innerText =
+h.day + " " + h.month.en + " " + h.year + " AH";
+}
+catch{
+document.getElementById("hijriDate").innerText="Unable to load date";
+}
+
+}
+
+loadHijri();
+</script>
   
 </body>
 
 
 </html>
+
 
 
 
