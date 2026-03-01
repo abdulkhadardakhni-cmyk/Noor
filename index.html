@@ -58,24 +58,11 @@ color:white;
 
 <body>
 
-<header>🌙 NOOR - Islamic Helper</header>
+<header>🌙 NOOR - Islamic Helper BY Aslam</header>
 
 <div class="container">
 
-<h2>Hadith Collection</h2>
 
-<select id="bookSelect" onchange="loadHadith()">
-<option value="bukhari">Bukhari</option>
-<option value="muslim">Muslim</option>
-<option value="tirmidhi">Tirmidhi</option>
-</select>
-
-<p id="hadithText">Loading hadith...</p>
-
-<button onclick="prevHadith()">Prev</button>
-<button onclick="nextHadith()">Next</button>
- 
-<div class="card">
 <h2>📖 Quran Reader</h2>
 
 <select id="surahSelect" onchange="loadSurah()"></select>
@@ -91,10 +78,7 @@ color:white;
   
 </div>
 
-
-
-
- 
+  
 <script>
 
 // load surah list
@@ -215,61 +199,12 @@ function playSurahAudio(){
 surahAudio.onpause = ()=> clearInterval(scrollInterval);
 surahAudio.onended = ()=> clearInterval(scrollInterval);
 </script>
-
-<script>
-let hadiths=[];
-let index=0;
-
-async function loadHadith(){
-
-const book=document.getElementById("bookSelect").value;
-document.getElementById("hadithText").innerText="Loading...";
-
-const res = await fetch("https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/eng-"+book+".json");
-const data = await res.json();
-
-hadiths=data.hadiths;
-index=0;
-showHadith();
-}
-
-function showHadith(){
-if(!hadiths.length) return;
-
-let text = hadiths[index].text;
-
-document.getElementById("hadithText").innerText =
-roman(text) + "\n\nHadith #" + hadiths[index].hadithnumber;
-}
-
-function nextHadith(){
-index=(index+1)%hadiths.length;
-showHadith();
-}
-
-function prevHadith(){
-index=(index-1+hadiths.length)%hadiths.length;
-showHadith();
-}
-
-function roman(t){
-return t
-.replace(/Actions/gi,"Amaal")
-.replace(/intentions/gi,"niyat")
-.replace(/believer/gi,"momin")
-.replace(/charity/gi,"sadqa")
-.replace(/truth/gi,"sachai")
-.replace(/Allah/gi,"Allah Ta'ala")
-.replace(/Prophet/gi,"Nabi");
-}
-
-loadHadith();
-</script>
   
 </body>
 
 
 </html>
+
 
 
 
