@@ -75,6 +75,7 @@ color:white;
 <select id="surahSelect" onchange="loadSurah()"></select>
 
 <button onclick="playSurahAudio()">▶ Play Surah</button>
+<button type="button" onclick="stopSurahAudio()">⏹ Stop</button>
 
 <div id="quranText">Select Surah</div>
 
@@ -251,10 +252,18 @@ surahAudio.onpause = ()=> clearInterval(scrollInterval);
 surahAudio.onended = ()=> clearInterval(scrollInterval);
 </script>
 
+  <script>
+function stopSurahAudio(){
+  surahAudio.pause();
+  surahAudio.currentTime = 0;
+}
+</script>
+
 </body>
 
 
 </html>
+
 
 
 
