@@ -82,8 +82,11 @@ color:white;
 
 <h3>Qibla Direction</h3>
 
-<div id="compass" style="font-size:40px;">🧭</div>
-<p id="qiblaText">Finding direction...</p>
+<h3>Live Qibla Compass</h3>
+
+<div id="compass" style="font-size:60px; transition:0.3s;">🧭</div>
+
+<p id="qiblaText">Finding Qibla...</p>
 
 <h3>Daily Ayah</h3>
 <p id="ayahText">Loading Ayah...</p>
@@ -251,27 +254,37 @@ loadAyah();
 </script>
 
 <script>
-navigator.geolocation.getCurrentPosition(function(pos){
+let qiblaDeg=0;
 
-let lat = pos.coords.latitude * Math.PI/180;
-let lon = pos.coords.longitude * Math.PI/180;
+navigator.geolocation.getCurrentPosition(pos=>{
 
-let kaabaLat = 21.4225 * Math.PI/180;
-let kaabaLon = 39.8262 * Math.PI/180;
+let lat=pos.coords.latitude*Math.PI/180;
+let lon=pos.coords.longitude*Math.PI/180;
 
-let angle = Math.atan2(
- Math.sin(kaabaLon-lon),
- Math.cos(lat)*Math.tan(kaabaLat) -
- Math.sin(lat)*Math.cos(kaabaLon-lon)
+let kaabaLat=21.4225*Math.PI/180;
+let kaabaLon=39.8262*Math.PI/180;
+
+let angle=Math.atan2(
+Math.sin(kaabaLon-lon),
+Math.cos(lat)*Math.tan(kaabaLat)-Math.sin(lat)*Math.cos(kaabaLon-lon)
 );
 
-let degree = (angle*180/Math.PI+360)%360;
+qiblaDeg=(angle*180/Math.PI+360)%360;
 
-document.getElementById("qiblaText").innerText =
-"Qibla Direction: " + degree.toFixed(2) + "°";
+document.getElementById("qiblaText").innerText=
+"Qibla: "+qiblaDeg.toFixed(1)+"°";
 
-document.getElementById("compass").style.transform =
-"rotate("+degree+"deg)";
+});
+
+window.addEventListener("deviceorientation",e=>{
+
+let heading=e.alpha;
+if(heading===null) return;
+
+let rotate=360-heading+qiblaDeg;
+
+document.getElementById("compass").style.transform=
+"rotate("+rotate+"deg)";
 
 });
 </script>
@@ -280,6 +293,7 @@ document.getElementById("compass").style.transform =
 
 
 </html>
+
 
 
 
