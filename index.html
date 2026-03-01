@@ -74,6 +74,8 @@ color:white;
 
 <select id="surahSelect" onchange="loadSurah()"></select>
 
+<button onclick="playSurahAudio()">▶ Play Surah</button>
+
 <div id="quranText">Select Surah</div>
 
 <select id="paraSelect" onchange="loadPara()">
@@ -228,10 +230,32 @@ function playAudio(num){
 }
 </script>
 
+  <script>
+let surahAudio = new Audio();
+let scrollInterval;
+
+function playSurahAudio(){
+  const surah = document.getElementById("surahSelect").value;
+  if(!surah) return;
+
+  surahAudio.src = "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/" + surah + ".mp3";
+  surahAudio.play();
+
+  clearInterval(scrollInterval);
+  scrollInterval = setInterval(()=>{
+    window.scrollBy(0,1);
+  },100);
+}
+
+surahAudio.onpause = ()=> clearInterval(scrollInterval);
+surahAudio.onended = ()=> clearInterval(scrollInterval);
+</script>
+
 </body>
 
 
 </html>
+
 
 
 
