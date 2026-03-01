@@ -91,6 +91,16 @@ color:white;
 <button onclick="newQuote()">New Quote</button>
 </div>
 
+  <hr>
+
+<h2>Hadith Collection</h2>
+
+<div id="hadithBox">
+  <p id="hadithText">Click button to see Hadith</p>
+</div>
+
+<button onclick="newHadith()">Show Hadith</button>
+
 
 <script>
 let c=0;
@@ -267,10 +277,26 @@ function stopAyahAudio(){
 }
 </script>
 
+  <script>
+const hadiths = [
+  "Actions are judged by intentions. — Bukhari",
+  "The best among you are those who have the best manners. — Bukhari",
+  "Make things easy, do not make things difficult. — Muslim",
+  "None of you truly believes until he loves for his brother what he loves for himself. — Bukhari",
+  "Smiling in front of your brother is charity. — Tirmidhi"
+];
+
+function newHadith(){
+  const random = Math.floor(Math.random()*hadiths.length);
+  document.getElementById("hadithText").innerText = hadiths[random];
+}
+</script>
+
 </body>
 
 
 </html>
+
 
 
 
