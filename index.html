@@ -218,6 +218,14 @@ surahAudio.onended = ()=> clearInterval(scrollInterval);
 </script>
 
 <script>
+function stopAudio() {
+  var audio = document.getElementById("audioPlayer");
+  audio.pause();
+  audio.currentTime = 0;
+}
+</script>
+
+<script>
 async function loadHijri(){
 
 try{
@@ -283,6 +291,7 @@ document.getElementById("count").innerText = 0;
 
 
 </html>
+
 
 
 
