@@ -1,0 +1,22 @@
+{
+  "name": "noor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "live-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdulkhadardakhni-cmyk/Noor.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/abdulkhadardakhni-cmyk/Noor/issues"
+  },
+  "homepage": "https://github.com/abdulkhadardakhni-cmyk/Noor#readme"
+}
